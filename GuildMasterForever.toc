@@ -1,0 +1,81 @@
+## Interface: 16001
+## Title: |cffe6c35cGuild Master Forever|r
+## Notes: Guild tools for WoW: Forever: guild chats, layer hop, party gathering, map calls, an LFG board and officer tools.
+## Author: SwiftyPigeon512
+## Version: 0.1.0
+## SavedVariables: GuildMasterForeverDB
+## IconTexture: Interface\AddOns\GuildMasterForever\media\logo64
+## X-License: MIT
+
+Bootstrap.lua
+Config.lua
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+libs\HereBeDragons\HereBeDragons-2.0.lua
+libs\HereBeDragons\HereBeDragons-Pins-2.0.lua
+
+Locales.lua
+Locales\deDE.lua
+Locales\esES.lua
+Locales\frFR.lua
+Terms.lua
+Core.lua
+Weeks.lua
+Diagnostics.lua
+Dialog.lua
+PlayerMenu.lua
+Codec.lua
+Sign.lua
+Zones.lua
+Who.lua
+Data.lua
+Roster.lua
+Comm.lua
+Map.lua
+Layers.lua
+Hop.lua
+Positions.lua
+Decree.lua
+Channels.lua
+Filter.lua
+Inspect.lua
+Fellows.lua
+King.lua
+Vox.lua
+Court.lua
+Board.lua
+Week.lua
+Treasury.lua
+Bank.lua
+Backup.lua
+Acts.lua
+Chronicle.lua
+Moderation.lua
+Alts.lua
+Keys.lua
+Setup.lua
+Loot.lua
+Crafters.lua
+Workshop.lua
+Versions.lua
+Ed25519.lua
+libs\QREncode\qrencode.lua
+Link.lua
+Recruit.lua
+AnswerBank.lua
+Answers.lua
+Views.lua
+Members.lua
+UI.lua
+Consent.lua
+Letters.lua
+MainKey.lua
+OfficerMuster.lua
+WeeklyBrief.lua
+WeekLog.lua
+GuildFrame.lua
+Borders.lua
+Nameplates.lua
+ChatWindow.lua
+Mentions.lua
+Party.lua
