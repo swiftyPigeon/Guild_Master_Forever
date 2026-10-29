@@ -72,7 +72,7 @@ ns.Locale("frFR", {
 	HELP_MUSTER = "Point de rencontre : tout le monde voit où se retrouver, marqueur pendant 30 minutes.",
 	HELP_HERALDRY_NAME = "Inspection des tabards",
 	HELP_HERALDRY = "Annonce une inspection : portez votre tabard. Envoyée depuis l'onglet Tabards.",
-	WRIT_ACK = "À vos ordres",
+	WRIT_ACK = "Accuser réception",
 	WRIT_ACKED = "Reçu",
 	WRIT_FROM = "de %s",
 	THRONE_AGENDA_LINE = "Agenda : %s, dans %d min (%s)",

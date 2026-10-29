@@ -72,7 +72,7 @@ ns.Locale({ "esES", "esMX" }, {
 	HELP_MUSTER = "Punto de reunión: todos ven dónde reunirse, marcador durante 30 minutos.",
 	HELP_HERALDRY_NAME = "Inspección de tabardos",
 	HELP_HERALDRY = "Anuncia una inspección: lleva tu tabardo. Se envía desde la pestaña Tabardos.",
-	WRIT_ACK = "A vuestras órdenes",
+	WRIT_ACK = "Confirmar lectura",
 	WRIT_ACKED = "Recibido",
 	WRIT_FROM = "de %s",
 	THRONE_AGENDA_LINE = "Agenda: %s, en %d min (%s)",

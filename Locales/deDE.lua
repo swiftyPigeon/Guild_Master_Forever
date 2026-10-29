@@ -72,7 +72,7 @@ ns.Locale("deDE", {
 	HELP_MUSTER = "Treffpunkt: alle sehen, wo sie sich treffen, Markierung für 30 Minuten.",
 	HELP_HERALDRY_NAME = "Wappenrock-Inspektion",
 	HELP_HERALDRY = "Kündigt eine Inspektion an: trag deinen Wappenrock. Wird im Reiter Wappenröcke gesendet.",
-	WRIT_ACK = "Zu Befehl",
+	WRIT_ACK = "Bestätigen",
 	WRIT_ACKED = "Bestätigt",
 	WRIT_FROM = "von %s",
 	THRONE_AGENDA_LINE = "Agenda: %s, in %d Min. (%s)",
