@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.1
+
+**Security fix: each guild's channel key now stays with that guild.**
+Guild Master Forever saves its settings for your whole account, one set per realm. Before this fix,
+the guild's channel key was saved the same way, so it followed your characters instead of your guild:
+- an **alt in a different guild** on the same realm used your first guild's key and joined its
+  hidden channel; as an officer, that alt could even hand the key to its own guild;
+- a player who **left for another guild** kept the old key, and their add-on told the new guild
+  "I hold a key", so the new guild never made a key of its own.
+
+Now each guild's key belongs to that guild alone. In another guild your character gets that guild's
+own key (or none until an officer hands it out); back in your first guild, its key comes back; with
+no guild, no key is held. Nothing to do on your side: update, and each guild settles on its own
+channel at the next login.
+
+Tip for officers: after removing a member you don't trust, type `/gmf key rotate` so the guild moves
+to a new key they never had.
+
 ## 0.1.0 (first release)
 
 The first public version of Guild Master Forever, for **WoW: Forever**, for a **single guild**:

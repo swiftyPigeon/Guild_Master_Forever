@@ -4,7 +4,7 @@ local L = ns.L
 -- The guild settings are in Config.lua (loaded before this file).
 
 ns.NAME = "Guild Master Forever"
-ns.VERSION = "0.1.0"
+ns.VERSION = "0.1.1"
 ns.PREFIX = "GMFOREVER"          -- addon message prefix (max 16 chars)
 ns.CHANNEL = "GMForeverNet"     -- no channel goes by these names (sealed by default: Comm.ChannelSpec)
 ns.CHANNEL_HORDE = "GMForeverNetH"

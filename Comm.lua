@@ -925,7 +925,7 @@ local keyWaiting, keyHeld = false, nil -- keyWaiting: GetTime() our wait began; 
 local keyHeldSeen                       -- the last guildmate who said so (kept for the key icon)
 local keyAnswerAt = -math.huge          -- GetTime() a key answer (K1, K2, K3) was last heard over GUILD
 
--- Each guild's key is its own (0.1.0). The saved variables are the account's, one store per realm
+-- Each guild's key is its own (0.1.1). The saved variables are the account's, one store per realm
 -- group, so an alt in another guild, or a character who left for another guild, would otherwise
 -- carry the first guild's key there: join its channel, hand it to the new guild, or answer "I hold
 -- a key" so the new guild never made its own. The key and what goes with it (its epoch, the keys

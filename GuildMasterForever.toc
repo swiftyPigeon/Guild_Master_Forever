@@ -2,7 +2,7 @@
 ## Title: |cffe6c35cGuild Master Forever|r
 ## Notes: Guild tools for WoW: Forever: guild chats, layer hop, party gathering, map calls, an LFG board and officer tools.
 ## Author: SwiftyPigeon512
-## Version: 0.1.0
+## Version: 0.1.1
 ## SavedVariables: GuildMasterForeverDB
 ## IconTexture: Interface\AddOns\GuildMasterForever\media\logo64
 ## X-License: MIT
