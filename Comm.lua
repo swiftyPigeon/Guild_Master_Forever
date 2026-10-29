@@ -814,6 +814,7 @@ function Comm.GuardStats()
 end
 
 function Comm.JoinChannel()
+	Comm.KeyForGuild()
 	if not ns.IsMember() then return end
 	-- The public channel of the builds before Phase 3: the game rejoins a channel it was in at login,
 	-- so it is left wherever we find ourselves on it. Nothing goes by these names any more.
@@ -919,10 +920,48 @@ end
 -- and asks again every KEY_ASK_AGAIN, until an officer who holds it is online and hands it out.
 Comm.KEY_WAIT = 45
 Comm.KEY_ASK_AGAIN = 300
+
 local keyWaiting, keyHeld = false, nil -- keyWaiting: GetTime() our wait began; keyHeld: the first guildmate who said they hold a key
 local keyHeldSeen                       -- the last guildmate who said so (kept for the key icon)
 local keyAnswerAt = -math.huge          -- GetTime() a key answer (K1, K2, K3) was last heard over GUILD
+
+-- Each guild's key is its own (0.1.0). The saved variables are the account's, one store per realm
+-- group, so an alt in another guild, or a character who left for another guild, would otherwise
+-- carry the first guild's key there: join its channel, hand it to the new guild, or answer "I hold
+-- a key" so the new guild never made its own. The key and what goes with it (its epoch, the keys
+-- it retired, a rotation in hand) belong to rdb.keyGuild; for any other guild they are put aside
+-- in rdb.guildKeys[guild] and that guild's own (or none) come back. Guildless: no key at all.
+-- A key saved before this (no keyGuild) is taken as the current guild's.
+local KEY_FIELDS = { "realmKey", "keyEpoch", "keyRetired", "keyRotation" }
+function Comm.KeyForGuild()
+	local rdb = ns.rdb
+	if type(rdb) ~= "table" then return false end
+	local guild = ns.IsInGuild() and ns.GetGuildInfo("player") or nil
+	if ns.IsInGuild() and (type(guild) ~= "string" or guild == "") then return false end -- (the name not known yet at login)
+	local mine = guild or ""
+	if rdb.keyGuild == nil then
+		if mine == "" then for _, f in ipairs(KEY_FIELDS) do rdb[f] = nil end end -- (whose it was can't be told)
+		rdb.keyGuild = mine
+		return false
+	end
+	if rdb.keyGuild == mine then return false end
+	rdb.guildKeys = type(rdb.guildKeys) == "table" and rdb.guildKeys or {}
+	if rdb.keyGuild ~= "" then
+		local kept = {}
+		for _, f in ipairs(KEY_FIELDS) do kept[f] = rdb[f] end
+		rdb.guildKeys[rdb.keyGuild] = next(kept) and kept or nil
+	end
+	local own = mine ~= "" and rdb.guildKeys[mine] or nil
+	for _, f in ipairs(KEY_FIELDS) do rdb[f] = type(own) == "table" and own[f] or nil end
+	if mine ~= "" then rdb.guildKeys[mine] = nil end
+	ns.Log("realm key: guild is now %s; %s", mine ~= "" and mine or "none", rdb.realmKey and "its own key back" or "no key for it yet") -- (never the key)
+	rdb.keyGuild = mine
+	keyWaiting, keyHeld = false, nil
+	return true
+end
+
 function Comm.RequestKey()
+	Comm.KeyForGuild()
 	if not (ns.IsMember() and ns.rdb) or ns.rdb.realmKey then return end
 	if IsInGuild() then Enqueue("GUILD", "K0~", "keyreq") end -- (the game's own IsInGuild: GUILD needs a real guild)
 	-- One wait at a time; one that never ended (its timer lost) no longer counts after its time.
@@ -940,6 +979,7 @@ function Comm.RequestKey()
 	end)
 end
 function Comm.MakeKeyIfNone()
+	Comm.KeyForGuild()
 	if not (ns.IsMember() and ns.rdb) or ns.rdb.realmKey then return end
 	if not (IsInGuild() or ns.IsTestGuild()) or not ns.Roster.IsOfficer() then return end
 	local key = ns.Keys.NewKey()
@@ -961,6 +1001,7 @@ function Comm.SetRealmKey(secret)
 		ns.Print(ns.L.KEY_TOO_SHORT)
 		return
 	end
+	Comm.KeyForGuild()
 	local was = ns.rdb.realmKey
 	ns.rdb.realmKey = secret
 	Enqueue("GUILD", "K1~" .. secret, "key")
@@ -1448,6 +1489,8 @@ local function OnAddonMessage(prefix, text, dist, sender, target, zoneChannelID,
 	local kind = (dist == "CHANNEL" and "ch:" or "g:") .. (text:match("^C%w+:") and "chunk" or text:sub(1, 2))
 	Count(stats.byType, kind) -- (unknown prefixes fold into "other": a flood of them stays small)
 	local now = ns.Now()
+	-- A key message: this guild's key in hand first (an alt, or a guild changed since the last look).
+	if text:sub(1, 1) == "K" and text:sub(3, 3) == "~" then Comm.KeyForGuild() end
 	if dist == "GUILD" and (text:sub(1, 3) == "K1~" or text:sub(1, 3) == "K3~") then keyAnswerAt = GetTime() end
 	-- A guildmate holds a key (K2, audit fix B): no key is made while we wait for it.
 	if dist == "GUILD" and text:sub(1, 3) == "K2~" then
@@ -1586,6 +1629,7 @@ end
 -- Outside a network guild the addon stays out of the channel (called when the guild changes).
 -- Joining is left to the housekeeping ticker, so we never jump ahead of General/Trade at login.
 function Comm.CheckMembership()
+	Comm.KeyForGuild() -- (another guild, or none: its own key, or none, before anything else)
 	if ns.IsMember() then
 		-- Joined a guild of the network after login: onto the channel now (not at the next minute's
 		-- housekeeping), the key asked for if we have none, the census once we are on.
@@ -1609,6 +1653,7 @@ end
 ns.On("LOGIN", function()
 	Comm.loginAt = ns.Now()
 	C_ChatInfo.RegisterAddonMessagePrefix(ns.PREFIX)
+	Comm.KeyForGuild()
 	Comm.NetPrefix() -- (registers the network's, when the key is already here)
 	-- No key yet? Ask our guild once (officers who have it answer).
 	ns.After(20, "key request", Comm.RequestKey)

@@ -173,6 +173,7 @@ end
 -- A key with its epoch, taken when newer than any we heard of: the channel follows. The keys it
 -- replaces (those it came with, and the one we held) are remembered, and handed on with it.
 local function Take(key, at, quiet, retires)
+	if ns.Comm and ns.Comm.KeyForGuild then ns.Comm.KeyForGuild() end -- (this guild's key, never another's)
 	local rdb = ns.rdb
 	if not rdb or not ValidKey(key) then return false end
 	local was = Latest()
