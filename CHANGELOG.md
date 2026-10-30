@@ -12,8 +12,12 @@ the guild's channel key was saved the same way, so it followed your characters i
 
 Now each guild's key belongs to that guild alone. In another guild your character gets that guild's
 own key (or none until an officer hands it out); back in your first guild, its key comes back; with
-no guild, no key is held. Nothing to do on your side: update, and each guild settles on its own
-channel at the next login.
+no guild, no key is held.
+
+Nothing to type. After the update, each character lets go of the key 0.1.0 saved (it can't tell
+which guild that key came from) and gets its guild's key again from an officer online; if no
+officer holds one, the first officer online makes a new one. For a minute or two after logging in,
+the key in the window's header stays grey, then turns gold.
 
 Tip for officers: after removing a member you don't trust, type `/gmf key rotate` so the guild moves
 to a new key they never had.

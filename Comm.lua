@@ -931,7 +931,8 @@ local keyAnswerAt = -math.huge          -- GetTime() a key answer (K1, K2, K3) w
 -- a key" so the new guild never made its own. The key and what goes with it (its epoch, the keys
 -- it retired, a rotation in hand) belong to rdb.keyGuild; for any other guild they are put aside
 -- in rdb.guildKeys[guild] and that guild's own (or none) come back. Guildless: no key at all.
--- A key saved before this (no keyGuild) is taken as the current guild's.
+-- A key saved by 0.1.0 (no keyGuild) is dropped once: whose guild it came from can't be told (an alt
+-- may hold another guild's), and the guild hands its key out again, or an officer makes a new one.
 local KEY_FIELDS = { "realmKey", "keyEpoch", "keyRetired", "keyRotation" }
 function Comm.KeyForGuild()
 	local rdb = ns.rdb
@@ -940,9 +941,11 @@ function Comm.KeyForGuild()
 	if ns.IsInGuild() and (type(guild) ~= "string" or guild == "") then return false end -- (the name not known yet at login)
 	local mine = guild or ""
 	if rdb.keyGuild == nil then
-		if mine == "" then for _, f in ipairs(KEY_FIELDS) do rdb[f] = nil end end -- (whose it was can't be told)
+		local had = rdb.realmKey ~= nil
+		for _, f in ipairs(KEY_FIELDS) do rdb[f] = nil end -- (whose it was can't be told)
 		rdb.keyGuild = mine
-		return false
+		if had then ns.Log("realm key: the key saved by 0.1.0 dropped; the guild hands its own out again") end
+		return had
 	end
 	if rdb.keyGuild == mine then return false end
 	rdb.guildKeys = type(rdb.guildKeys) == "table" and rdb.guildKeys or {}
