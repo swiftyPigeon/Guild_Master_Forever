@@ -1,5 +1,13 @@
 # Changelog
 
+## Next release (on GitHub now)
+
+New page: **NETWORKS.md** explains ahead of time how networks of guilds (coming in 0.2.0) will
+work and which kinds of guilds will notice their security. Nothing changes for single guilds.
+
+New page: **SECURITY.md**: found a security problem? Report it privately on GitHub (Security tab →
+Report a vulnerability), not in a public issue.
+
 ## 0.1.1
 
 **Security fix: each guild's channel key now stays with that guild.**
@@ -23,12 +31,6 @@ Nothing to type. After the update, each character lets go of the key 0.1.0 saved
 which guild that key came from) and gets its guild's key again from an officer online; if no
 officer holds one, the first officer online makes a new one. For a minute or two after logging in,
 the key in the window's header stays grey, then turns gold.
-
-New page: **NETWORKS.md** explains ahead of time how networks of guilds (coming in 0.2.0) will
-work and which kinds of guilds will notice their security. Nothing changes for single guilds.
-
-New page: **SECURITY.md**: found a security problem? Report it privately on GitHub (Security tab →
-Report a vulnerability), not in a public issue.
 
 Tip for officers: after removing a member you don't trust, type `/gmf key rotate` so the guild moves
 to a new key they never had.
