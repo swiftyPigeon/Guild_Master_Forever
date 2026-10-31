@@ -24,6 +24,9 @@ which guild that key came from) and gets its guild's key again from an officer o
 officer holds one, the first officer online makes a new one. For a minute or two after logging in,
 the key in the window's header stays grey, then turns gold.
 
+New page: **NETWORKS.md** explains ahead of time how networks of guilds (coming in 0.2.0) will
+work and which kinds of guilds will notice their security. Nothing changes for single guilds.
+
 Tip for officers: after removing a member you don't trust, type `/gmf key rotate` so the guild moves
 to a new key they never had.
 
