@@ -27,6 +27,9 @@ the key in the window's header stays grey, then turns gold.
 New page: **NETWORKS.md** explains ahead of time how networks of guilds (coming in 0.2.0) will
 work and which kinds of guilds will notice their security. Nothing changes for single guilds.
 
+New page: **SECURITY.md**: found a security problem? Report it privately on GitHub (Security tab →
+Report a vulnerability), not in a public issue.
+
 Tip for officers: after removing a member you don't trust, type `/gmf key rotate` so the guild moves
 to a new key they never had.
 

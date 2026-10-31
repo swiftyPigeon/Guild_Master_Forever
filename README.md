@@ -5,7 +5,8 @@ and officer tools. Main command: **`/gmf`**.
 
 Version **0.1.1**, for a single guild (networks of several guilds come in 0.2.0).
 How to use it: **[GUIDE.md](GUIDE.md)**. What changed: [CHANGELOG.md](CHANGELOG.md). Networks of
-guilds (coming in 0.2.0) and who will notice their security: [NETWORKS.md](NETWORKS.md).
+guilds (coming in 0.2.0) and who will notice their security: [NETWORKS.md](NETWORKS.md). Found a
+security problem? Report it privately: [SECURITY.md](SECURITY.md).
 
 ## Install
 Get it from [CurseForge](https://www.curseforge.com/wow/addons/guild-master-forever) (pick your
