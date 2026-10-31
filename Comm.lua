@@ -934,12 +934,59 @@ local keyAnswerAt = -math.huge          -- GetTime() a key answer (K1, K2, K3) w
 -- A key saved by 0.1.0 (no keyGuild) is dropped once: whose guild it came from can't be told (an alt
 -- may hold another guild's), and the guild hands its key out again, or an officer makes a new one.
 local KEY_FIELDS = { "realmKey", "keyEpoch", "keyRetired", "keyRotation" }
+local Switch, NoteCharacter
 function Comm.KeyForGuild()
 	local rdb = ns.rdb
 	if type(rdb) ~= "table" then return false end
 	local guild = ns.IsInGuild() and ns.GetGuildInfo("player") or nil
 	if ns.IsInGuild() and (type(guild) ~= "string" or guild == "") then return false end -- (the name not known yet at login)
 	local mine = guild or ""
+	local changed = Switch(rdb, mine)
+	NoteCharacter(rdb, mine)
+	return changed
+end
+
+-- A guild's key put aside is forgotten once none of the account's characters on this realm group
+-- is in that guild (0.1.1): rdb.keyChars[name] = { g = guild or "", t = last seen, left = the guild
+-- it was in before it had none, leftAt = since when }. A character seen in another guild lets go of
+-- its old one at once (the game named the new one). One seen in no guild holds its old one
+-- Comm.KEY_LEFT_DAYS more (the game may say "no guild" for a moment at login). One not logged in for
+-- Comm.KEY_CHAR_DAYS holds nothing (a deleted character, or one asking its guild again later).
+Comm.KEY_LEFT_DAYS = 3
+Comm.KEY_CHAR_DAYS = 90
+local charsTidied = false
+function NoteCharacter(rdb, mine)
+	local me = ns.PlayerName()
+	if type(me) ~= "string" or me == "?" then return end
+	rdb.keyChars = type(rdb.keyChars) == "table" and rdb.keyChars or {}
+	local now = ns.Now()
+	local was = type(rdb.keyChars[me]) == "table" and rdb.keyChars[me] or nil
+	local entry = { g = mine, t = now }
+	if mine == "" and was then
+		if was.g ~= "" then entry.left, entry.leftAt = was.g, now
+		else entry.left, entry.leftAt = was.left, was.leftAt end
+	end
+	rdb.keyChars[me] = entry
+	if charsTidied and was and was.g == mine then return end
+	charsTidied = true
+	local inUse = {}
+	for name, c in pairs(rdb.keyChars) do
+		if type(c) ~= "table" or (name ~= me and now - (tonumber(c.t) or 0) > Comm.KEY_CHAR_DAYS * 86400) then
+			rdb.keyChars[name] = nil
+		else
+			if type(c.g) == "string" and c.g ~= "" then inUse[c.g] = true end
+			if type(c.left) == "string" and now - (tonumber(c.leftAt) or 0) <= Comm.KEY_LEFT_DAYS * 86400 then inUse[c.left] = true end
+		end
+	end
+	for g in pairs(type(rdb.guildKeys) == "table" and rdb.guildKeys or {}) do
+		if not inUse[g] then
+			rdb.guildKeys[g] = nil
+			ns.Log("realm key: %s's key forgotten: none of the account's characters is in it", g)
+		end
+	end
+end
+
+function Switch(rdb, mine)
 	if rdb.keyGuild == nil then
 		local had = rdb.realmKey ~= nil
 		for _, f in ipairs(KEY_FIELDS) do rdb[f] = nil end -- (whose it was can't be told)

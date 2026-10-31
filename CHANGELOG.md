@@ -14,6 +14,11 @@ Now each guild's key belongs to that guild alone. In another guild your characte
 own key (or none until an officer hands it out); back in your first guild, its key comes back; with
 no guild, no key is held.
 
+Old keys don't pile up: once none of your characters on the realm is in a guild any more, that
+guild's saved key is forgotten. A character who joins another guild lets go of the old guild's key
+at once; one left with no guild keeps it 3 more days; one you haven't played for 90 days no longer
+keeps its guild's key (if you play it again, the guild hands the key out again).
+
 Nothing to type. After the update, each character lets go of the key 0.1.0 saved (it can't tell
 which guild that key came from) and gets its guild's key again from an officer online; if no
 officer holds one, the first officer online makes a new one. For a minute or two after logging in,
